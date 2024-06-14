@@ -36,17 +36,17 @@ export default function Home() {
 
     const getBackgroundImage = () => {
         if (!weatherData || !weatherData.current || !weatherData.current.weather_descriptions) {
-            return 'img/back.jpg'; // Default background image
+            return 'img/back.jpg'; 
         } else {
             const weatherDescription = weatherData.current.weather_descriptions[0].toLowerCase();
             if (weatherDescription.includes('sunny')) {
-                return 'img/back.jpg'; // Sunny background image
+                return 'img/back.jpg'; 
             }
             if (weatherDescription.includes('rain')) {
-                return 'img/back.jpg'; // Rainy background image
+                return 'img/back.jpg'; 
             }
             if (weatherDescription.includes('cloud')) {
-                return 'img/back.jpg'; // Cloudy background image
+                return 'img/back.jpg'; 
             }
 
             return 'img/back.jpg';
@@ -54,27 +54,31 @@ export default function Home() {
     };
 
     return (
-        <div  style={{ ...styles.container, backgroundImage: `url('https://media.istockphoto.com/id/1129402005/photo/green-garden-blurred-in-the-background-gardening-and-spring-concept.jpg?s=612x612&w=0&k=20&c=M6dQ9tjZY8tJAyBKzMXSj-ksDWgEEdyyLl8ySwkCCLg=')` }}>
+        <div  style={{ ...styles.container, backgroundImage: `url(${getBackgroundImage()})` }}>
+             
             <main style={styles.main}>
+           
                 <form onSubmit={handleSubmit} style={styles.form}>
+                    <div style={styles.box1}>
                     <input 
                         type="text" 
                         value={userCity} 
                         onChange={(e) => setUserCity(e.target.value)} 
-                        placeholder="Enter city name" 
+                        placeholder="Enter city name"
                         style={styles.input}
-                    />
-                    <button type="submit" style={styles.button}>Get Weather</button>
+                    /></div>
+                    <div style={styles.box2}>
+                        <button type="submit" style={styles.button}>Get Weather</button>
+                    </div>
                 </form>
-                {error ? (
-                    <p style={styles.error}>Error: {error}</p>
-                ) : weatherData && weatherData.location && weatherData.location.name ?(
+                {weatherData && weatherData.location && weatherData.location.name ?(
                     <div style={styles.weatherContainer}>
-                        <h2>Weather in {weatherData.location.name}, {weatherData.location.country}</h2>
+                        <h2 style={styles.cityName} >Weather in {weatherData.location.name}, {weatherData.location.country}</h2>
                         <div style={styles.currentWeather}>
                             <img src={weatherData.current.weather_icons[0]} alt="Weather Icon" style={styles.weatherIcon} />
+                            
                             <div>
-                                <p>Temperature: {weatherData.current.temperature}°C</p>
+                                <p>Temperature: {weatherData.current.temperature}Â°C</p>
                                 <p>Weather: {weatherData.current.weather_descriptions[0]}</p>
                                 <p>Wind: {weatherData.current.wind_speed} km/h {weatherData.current.wind_dir}</p>
                             </div>
@@ -90,6 +94,13 @@ export default function Home() {
 }
 
 const styles = {
+    cityName: {
+        fontSize: '24px',
+        fontWeight: 'bold',
+        marginBottom: '20px',
+        fontFamily:'Arial-serif',
+        color: '#333',
+    },
     container: {
         display: 'flex',
         justifyContent: 'center',
@@ -97,25 +108,34 @@ const styles = {
         minHeight: '98.2vh',
         backgroundSize: 'cover',
         backgroundRepeat: 'no-repeat',
-        transition: 'background-image 0.3s ease',
         
     },
     main: {
         width: '90%',
-        maxWidth: '700px',
+        maxWidth: '50%',
         maxHeight: '1000px',
         padding: '60px',
+        opacity: '0.7',
         background: '#fff',
         boxShadow: '0px 20px 50px rgba(8, 112, 184, 0.7)',
-        // boxshadow: '0 20px 50px rgba(8, 112, 184, 0.7)',
         borderRadius: '40px',
     },
-    form: {
-        display: 'flex',
-        marginBottom: '80px',
+    form: {    
+        display:'flex',
+        flexWrap:'wrap',
+        justifyContent:'center',
+        alignItems:'baseline',
+        width:'100%',
+        marginBottom: '80px',   
+        
+    },
+    box1: {
+        width:'80%',
+        padding:'0px 0px 10px 10px'
     },
     input: {
-        flex: '1',
+        flex: 1,
+        width:'95%',
         padding: '10px',
         marginRight: '10px',
         borderRadius: '5px',
@@ -123,6 +143,8 @@ const styles = {
         fontSize: '16px',
     },
     button: {
+        flex:1,
+        width:'100%',
         padding: '10px 20px',
         border: 'none',
         borderRadius: '5px',
@@ -148,6 +170,7 @@ const styles = {
     weatherIcon: {
         width: '100px',
         height: '100px',
+        borderRadius:'20px',
         marginRight: '20px',
     },
     forecastContainer: {
